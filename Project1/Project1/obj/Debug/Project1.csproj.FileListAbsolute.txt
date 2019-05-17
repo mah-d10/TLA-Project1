@@ -1,0 +1,7 @@
+D:\Mahdi\University\Theory of Language and Automata\TLA-Project1\Project1\Project1\bin\Debug\Project1.exe.config
+D:\Mahdi\University\Theory of Language and Automata\TLA-Project1\Project1\Project1\bin\Debug\Project1.exe
+D:\Mahdi\University\Theory of Language and Automata\TLA-Project1\Project1\Project1\bin\Debug\Project1.pdb
+D:\Mahdi\University\Theory of Language and Automata\TLA-Project1\Project1\Project1\obj\Debug\Project1.csprojAssemblyReference.cache
+D:\Mahdi\University\Theory of Language and Automata\TLA-Project1\Project1\Project1\obj\Debug\Project1.csproj.CoreCompileInputs.cache
+D:\Mahdi\University\Theory of Language and Automata\TLA-Project1\Project1\Project1\obj\Debug\Project1.exe
+D:\Mahdi\University\Theory of Language and Automata\TLA-Project1\Project1\Project1\obj\Debug\Project1.pdb
