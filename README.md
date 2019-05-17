@@ -1,5 +1,5 @@
 # Finite Automata Potion!
-This is project 1 for the Theory of Languages and Automata course. It's about DFA and NFA and has 2 + 1 parts:
+This is project 1 for the Theory of Language and Automata course. It's about DFA and NFA and has 2 + 1 parts:
 #### Part 0:
 Reading the input from a file and storing the given NFA in the desired data structures.
 #### Part 1:
