@@ -4,8 +4,6 @@
     {
         static void Main(string[] args)
         {
-            string path = @"1.txt";
-            NFA nfa = new NFA(path);
         }
     }
 }

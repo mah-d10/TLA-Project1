@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Project1
 {
     public class NFA
     {
         public int StateCount;
-        public string[] Alphabet;
+        public char[] Alphabet;
         public HashSet<int>[] AdjacencyList;
         public List<char>[,] Cost;
         public int StartState;
@@ -18,7 +19,7 @@ namespace Project1
             StateCount = int.Parse(fileLines[0]);
 
             // get alphabet 
-            this.Alphabet = fileLines[1].Split(' ', ',');
+            this.Alphabet = fileLines[1].Split(' ', ',').Select(s => s[0]).ToArray();
 
             // initialize AdjacencyList 
             this.AdjacencyList = new HashSet<int>[StateCount];
@@ -35,7 +36,7 @@ namespace Project1
             this.StartState = 0;
             this.FinalStates = new HashSet<int>();
 
-            // create Adjacencylist
+            // create Adjacencylist and Cost
             for (int i = 2; i < fileLines.Length; i++)
             {
                 string[] edge = fileLines[i].Split(',');
@@ -57,10 +58,48 @@ namespace Project1
 
         public DFA ToDFA()
         {
-            var newStates = new List<HashSet<int>>();
+            var DFAStates = new List<HashSet<int>>();
             var DFAstartState = getStartStates();
+            DFAStates.Add(DFAstartState);
+            bool thereIsNewState = true;
+            int index = 0;
+            do
+            {
+                var current = DFAStates[index];
+                thereIsNewState = false;
+                foreach (var symbol in this.Alphabet)
+                {
+                    var newState = new HashSet<int>();
+                    foreach (var state in current)
+                    {
+                        var reachableStates = getReachableStates(symbol, state);
+                        newState.UnionWith(reachableStates);
+                    }
+                    thereIsNewState = AddNewState(ref newState, ref DFAStates);
+                }
+            } while (thereIsNewState);
 
             return new DFA();
+        }
+
+        public static bool AddNewState(ref HashSet<int> s, ref List<HashSet<int>> states)
+        {
+            foreach (var state in states)
+                if (s.SetEquals(state))
+                    return false;
+            return true;
+        }
+
+        public HashSet<int> getReachableStates(char symbol, int state)
+        {
+            var ans = new HashSet<int>();
+
+            var canGoToWithSymbol = new HashSet<int>();
+            foreach (int i in AdjacencyList[state])
+                if (Cost[state, i].Contains(symbol))
+                    canGoToWithSymbol.Add(i);
+
+            return ans;
         }
 
         public HashSet<int> getStartStates()
@@ -84,5 +123,4 @@ namespace Project1
             return ans;
         }
     }
-
 }
