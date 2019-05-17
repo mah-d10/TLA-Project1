@@ -89,5 +89,25 @@ namespace Project1.Tests
             Assert.IsTrue(nfa.CanGoWithLambda(2).SetEquals(new HashSet<int>() { 2, 3 }));
             Assert.IsTrue(nfa.CanGoWithLambda(3).SetEquals(new HashSet<int>() { 3, 2 }));
         }
+
+        [TestMethod()]
+        public void GetReachableStatesTest()
+        {
+            string path = @"..\..\..\TestData\1.txt";
+            var nfa = new NFA(path);
+
+            Assert.IsTrue(nfa.GetReachableStates('a', 0).SetEquals(new HashSet<int>() { 1 }));
+            Assert.IsTrue(nfa.GetReachableStates('b', 0).SetEquals(new HashSet<int>() { 1, 3 }));
+            Assert.IsTrue(nfa.GetReachableStates('a', 1).SetEquals(new HashSet<int>() { 1, 3 }));
+            Assert.IsTrue(nfa.GetReachableStates('b', 0).SetEquals(new HashSet<int>() { 3, 1 }));
+            Assert.IsTrue(nfa.GetReachableStates('b', 3).SetEquals(new HashSet<int>() { 3, 2 }));
+
+            path = @"..\..\..\TestData\3.txt";
+            nfa = new NFA(path);
+            Assert.IsTrue(nfa.GetReachableStates('a', 0).SetEquals(new HashSet<int>() { 1, 0, 2, 3 }));
+            Assert.IsTrue(nfa.GetReachableStates('a', 1).SetEquals(new HashSet<int>() { 0, 1, 2, 3 }));
+            Assert.IsTrue(nfa.GetReachableStates('a', 2).SetEquals(new HashSet<int>() { }));
+            Assert.IsTrue(nfa.GetReachableStates('b', 3).SetEquals(new HashSet<int>() { 2, 3 }));
+        }
     }
 }
