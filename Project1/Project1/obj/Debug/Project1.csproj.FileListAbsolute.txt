@@ -5,3 +5,10 @@ D:\Mahdi\University\Theory of Language and Automata\TLA-Project1\Project1\Projec
 D:\Mahdi\University\Theory of Language and Automata\TLA-Project1\Project1\Project1\obj\Debug\Project1.csproj.CoreCompileInputs.cache
 D:\Mahdi\University\Theory of Language and Automata\TLA-Project1\Project1\Project1\obj\Debug\Project1.exe
 D:\Mahdi\University\Theory of Language and Automata\TLA-Project1\Project1\Project1\obj\Debug\Project1.pdb
+X:\Git_Repos\TLA-Project1\Project1\Project1\bin\Debug\Project1.exe.config
+X:\Git_Repos\TLA-Project1\Project1\Project1\bin\Debug\Project1.exe
+X:\Git_Repos\TLA-Project1\Project1\Project1\bin\Debug\Project1.pdb
+X:\Git_Repos\TLA-Project1\Project1\Project1\obj\Debug\Project1.csprojAssemblyReference.cache
+X:\Git_Repos\TLA-Project1\Project1\Project1\obj\Debug\Project1.csproj.CoreCompileInputs.cache
+X:\Git_Repos\TLA-Project1\Project1\Project1\obj\Debug\Project1.exe
+X:\Git_Repos\TLA-Project1\Project1\Project1\obj\Debug\Project1.pdb
