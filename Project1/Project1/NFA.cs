@@ -59,7 +59,7 @@ namespace Project1
         public DFA ToDFA()
         {
             var DFAStates = new List<HashSet<int>>();
-            var DFAstartState = getStartStates();
+            var DFAstartState = GetStartStates();
             DFAStates.Add(DFAstartState);
             bool thereIsNewState = true;
             int index = 0;
@@ -72,7 +72,7 @@ namespace Project1
                     var newState = new HashSet<int>();
                     foreach (var state in current)
                     {
-                        var reachableStates = getReachableStates(symbol, state);
+                        var reachableStates = GetReachableStates(symbol, state);
                         newState.UnionWith(reachableStates);
                     }
                     thereIsNewState = AddNewState(ref newState, ref DFAStates);
@@ -90,7 +90,7 @@ namespace Project1
             return true;
         }
 
-        public HashSet<int> getReachableStates(char symbol, int state)
+        public HashSet<int> GetReachableStates(char symbol, int state)
         {
             var ans = new HashSet<int>();
 
@@ -99,15 +99,26 @@ namespace Project1
                 if (Cost[state, i].Contains(symbol))
                     canGoToWithSymbol.Add(i);
 
+            ans.UnionWith(canGoToWithSymbol);
+            foreach (int i in canGoToWithSymbol)
+                ans.UnionWith(this.CanGoWithLambda(i));
+
             return ans;
         }
 
-        public HashSet<int> getStartStates()
+        public HashSet<int> GetStartStates()
         {
             var ans = new HashSet<int>();
             ans.Add(this.StartState);
+            ans.UnionWith(this.CanGoWithLambda(StartState));
+            return ans;
+        }
+
+        public HashSet<int> CanGoWithLambda(int s)
+        {
+            var ans = new HashSet<int>();
             var queue = new Queue<long>();
-            queue.Enqueue(StartState);
+            queue.Enqueue(s);
 
             while (queue.Count != 0)
             {

@@ -44,16 +44,17 @@ namespace Project1.Tests
         }
 
         [TestMethod()]
-        public void getStartStatesTest()
+        public void GetStartStatesTest()
         {
             string path = @"..\..\..\TestData\1.txt";
+            var nfa = new NFA(path);
+
             var expected = new HashSet<int>();
             expected.Add(0);
             expected.Add(2);
             expected.Add(3);
 
-            var nfa = new NFA(path);
-            Assert.IsTrue(expected.SetEquals(nfa.getStartStates()));
+            Assert.IsTrue(expected.SetEquals(nfa.GetStartStates()));
         }
 
         [TestMethod()]
@@ -70,6 +71,23 @@ namespace Project1.Tests
 
             newState = new HashSet<int>() { 1, 3 };
             Assert.IsTrue(NFA.AddNewState(ref newState, ref states));
+        }
+
+        [TestMethod()]
+        public void CanGoWithLambdaTest()
+        {
+            string path = @"..\..\..\TestData\1.txt";
+            var nfa = new NFA(path);
+            Assert.IsTrue(nfa.CanGoWithLambda(1).SetEquals(new HashSet<int>() { }));
+            Assert.IsTrue(nfa.CanGoWithLambda(2).SetEquals(new HashSet<int>() { 3 }));
+            Assert.IsTrue(nfa.CanGoWithLambda(3).SetEquals(new HashSet<int>() { }));
+
+            path = @"..\..\..\TestData\2.txt";
+            nfa = new NFA(path);
+            Assert.IsTrue(nfa.CanGoWithLambda(0).SetEquals(new HashSet<int>() { 2, 3, 1 }));
+            Assert.IsTrue(nfa.CanGoWithLambda(1).SetEquals(new HashSet<int>() { }));
+            Assert.IsTrue(nfa.CanGoWithLambda(2).SetEquals(new HashSet<int>() { 2, 3 }));
+            Assert.IsTrue(nfa.CanGoWithLambda(3).SetEquals(new HashSet<int>() { 3, 2 }));
         }
     }
 }
