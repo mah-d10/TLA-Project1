@@ -67,10 +67,11 @@ namespace Project1.Tests
             var states = new List<HashSet<int>> { t1, t2, t3, t4 };
 
             var newState = new HashSet<int>() { 1, 4 };
-            Assert.IsFalse(NFA.AddNewState(ref newState, ref states));
+            Assert.AreEqual(1, NFA.AddNewState(ref newState, ref states));
 
             newState = new HashSet<int>() { 1, 3 };
-            Assert.IsTrue(NFA.AddNewState(ref newState, ref states));
+            Assert.AreEqual(4, NFA.AddNewState(ref newState, ref states));
+            Assert.IsTrue(states.Contains(newState));
         }
 
         [TestMethod()]
@@ -108,6 +109,30 @@ namespace Project1.Tests
             Assert.IsTrue(nfa.GetReachableStates('a', 1).SetEquals(new HashSet<int>() { 0, 1, 2, 3 }));
             Assert.IsTrue(nfa.GetReachableStates('a', 2).SetEquals(new HashSet<int>() { }));
             Assert.IsTrue(nfa.GetReachableStates('b', 3).SetEquals(new HashSet<int>() { 2, 3 }));
+        }
+
+        [TestMethod()]
+        public void GetDFAFinalStatesTest()
+        {
+            var finalStates = new HashSet<int>() { 1, 3 };
+            var dfaTestStates = new List<HashSet<int>>()
+            {
+                new HashSet<int>() { 1, 2, 3 },
+                new HashSet<int>() { 2 , 0 },
+                new HashSet<int>() { 3 },
+                new HashSet<int>() { 1, 2 },
+                new HashSet<int>() { 0 }
+            };
+            Assert.IsTrue(NFA.GetDFAFinalStates(dfaTestStates, finalStates).SetEquals(new HashSet<int>() { 0, 2, 3 }));
+        }
+
+        [TestMethod()]
+        public void ToDFATest()
+        {
+            string path = @"..\..\..\TestData\1.txt";
+            var nfa = new NFA(path);
+            var dfa = nfa.ToDFA();
+            Assert.AreEqual(true, true);
         }
     }
 }

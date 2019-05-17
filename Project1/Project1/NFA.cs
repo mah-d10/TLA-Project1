@@ -61,12 +61,20 @@ namespace Project1
             var DFAStates = new List<HashSet<int>>();
             var DFAstartState = GetStartStates();
             DFAStates.Add(DFAstartState);
-            bool thereIsNewState = true;
+            var DFAadjList = new List<HashSet<int>>();
+
+            const int N = 100;
+            var DFACost = new List<char>[N, N];
+            for (int i = 0; i < N; i++)
+                for (int j = 0; j < N; j++)
+                    DFACost[i, j] = new List<char>();
+
             int index = 0;
+            int trap = 0;
             do
             {
                 var current = DFAStates[index];
-                thereIsNewState = false;
+                DFAadjList.Add(new HashSet<int>());
                 foreach (var symbol in this.Alphabet)
                 {
                     var newState = new HashSet<int>();
@@ -75,19 +83,55 @@ namespace Project1
                         var reachableStates = GetReachableStates(symbol, state);
                         newState.UnionWith(reachableStates);
                     }
-                    thereIsNewState = AddNewState(ref newState, ref DFAStates);
-                }
-            } while (thereIsNewState);
+                    int to = AddNewState(ref newState, ref DFAStates);
+                    DFAadjList[index].Add(to);
+                    DFACost[index, to].Add(symbol);
 
-            return new DFA();
+
+                    if (newState.Count == 0)
+                        trap = to;
+                }
+                index++;
+            } while (index < DFAStates.Count);
+
+            //handle trap state
+            DFAadjList[trap].Add(trap);
+            DFACost[trap, trap].AddRange(this.Alphabet);
+
+            var DFAFinalStates = GetDFAFinalStates(DFAStates, this.FinalStates);
+            var c = formatCost();
+            return new DFA(DFAStates.Count, this.Alphabet, DFAadjList.ToArray(), c, 0, DFAFinalStates);
+
+            List<char>[,] formatCost()
+            {
+                int sCount = DFAStates.Count;
+                var ans = new List<char>[sCount, sCount];
+                for (int i = 0; i < sCount; i++)
+                    for (int j = 0; j < sCount; j++)
+                    {
+                        ans[i, j] = new List<char>();
+                        ans[i, j].AddRange(DFACost[i, j]);
+                    }
+                return ans;
+            }
+        }
+        public static HashSet<int> GetDFAFinalStates(List<HashSet<int>> states, HashSet<int> finalStates)
+        {
+            var ans = new HashSet<int>();
+            for (int i = 0; i < states.Count; i++)
+                foreach (var f in finalStates)
+                    if (states[i].Contains(f))
+                        ans.Add(i);
+            return ans;
         }
 
-        public static bool AddNewState(ref HashSet<int> s, ref List<HashSet<int>> states)
+        public static int AddNewState(ref HashSet<int> s, ref List<HashSet<int>> states)
         {
-            foreach (var state in states)
-                if (s.SetEquals(state))
-                    return false;
-            return true;
+            for (int i = 0; i < states.Count; i++)
+                if (s.SetEquals(states[i]))
+                    return i;
+            states.Add(s);
+            return states.Count - 1;
         }
 
         public HashSet<int> GetReachableStates(char symbol, int state)
