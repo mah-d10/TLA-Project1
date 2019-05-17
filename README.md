@@ -16,3 +16,7 @@ Almost all the methods have a unit test which can be ran with the desired input.
 - .NET Framework 4.7.2
 - MSTest Framework
 - Visual Studio 2019
+
+## Authors
+- Mahdi Moqaddami - [mah_d10](https://github.com/mah-d10)
+- MohammadJavad Mirshekari - [mj-haghighiGH](https://github.com/mj-haghighiGH)
