@@ -9,7 +9,7 @@ namespace Project1.Tests
         [TestMethod()]
         public void NFATest()
         {
-            string path = @"TestData\1.txt";
+            string path = @"..\..\..\TestData\1.txt";
             var nfa = new NFA(path);
             Assert.AreEqual(4, nfa.StateCount);
             CollectionAssert.AreEqual(new char[] { 'a', 'b' }, nfa.Alphabet);
@@ -46,7 +46,7 @@ namespace Project1.Tests
         [TestMethod()]
         public void getStartStatesTest()
         {
-            string path = @"TestData\1.txt";
+            string path = @"..\..\..\TestData\1.txt";
             var expected = new HashSet<int>();
             expected.Add(0);
             expected.Add(2);
