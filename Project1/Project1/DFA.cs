@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace Project1
 {
@@ -7,16 +9,14 @@ namespace Project1
         public int StateCount;
         public char[] Alphabet;
         public HashSet<int>[] AdjacencyList;
-        public List<char>[,] Cost;
+        public HashSet<char>[,] Cost;
         public int StartState;
         public HashSet<int> FinalStates;
-
-        public DFA() { }
         public DFA(
             int stateCount,
             char[] alphabet,
             HashSet<int>[] adjacencyList,
-            List<char>[,] cost,
+            HashSet<char>[,] cost,
             int startState,
             HashSet<int> finalStates
             )
@@ -27,6 +27,42 @@ namespace Project1
             this.Cost = cost;
             this.StartState = startState;
             this.FinalStates = finalStates;
+        }
+
+        public void Print(string outputPath)
+        {
+            var s = new StringBuilder();
+            s.Append(this.StateCount); s.Append("\n");
+            for (int i = 0; i < this.Alphabet.Length; i++)
+            {
+                s.Append(this.Alphabet[i]);
+                if (i != this.Alphabet.Length - 1)
+                    s.Append(',');
+            }
+            s.Append("\n");
+
+            s.Append("->");
+            for (int i = 0; i < StateCount; i++)
+                for (int j = 0; j < StateCount; j++)
+                    foreach (char symbol in Cost[i, j])
+                    {
+                        s.Append(getString(i)); s.Append(',');
+                        s.Append(symbol); s.Append(',');
+                        s.Append(getString(j)); s.Append("\n");
+                    }
+
+            //System.Console.WriteLine(s);
+            File.WriteAllText(outputPath, s.ToString());
+            return;
+
+            string getString(int i)
+            {
+                var ans = new StringBuilder();
+                if (FinalStates.Contains(i))
+                    ans.Append('*');
+                ans.Append('q'); ans.Append(i);
+                return ans.ToString();
+            }
         }
     }
 }

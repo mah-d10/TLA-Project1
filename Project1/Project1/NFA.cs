@@ -102,15 +102,15 @@ namespace Project1
             var c = formatCost();
             return new DFA(DFAStates.Count, this.Alphabet, DFAadjList.ToArray(), c, 0, DFAFinalStates);
 
-            List<char>[,] formatCost()
+            HashSet<char>[,] formatCost()
             {
                 int sCount = DFAStates.Count;
-                var ans = new List<char>[sCount, sCount];
+                var ans = new HashSet<char>[sCount, sCount];
                 for (int i = 0; i < sCount; i++)
                     for (int j = 0; j < sCount; j++)
                     {
-                        ans[i, j] = new List<char>();
-                        ans[i, j].AddRange(DFACost[i, j]);
+                        ans[i, j] = new HashSet<char>();
+                        ans[i, j].UnionWith(DFACost[i, j]);
                     }
                 return ans;
             }
