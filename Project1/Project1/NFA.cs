@@ -9,7 +9,7 @@ namespace Project1
         public int StateCount;
         public char[] Alphabet;
         public HashSet<int>[] AdjacencyList;
-        public List<char>[,] Cost;
+        public HashSet<char>[,] Cost;
         public int StartState;
         public HashSet<int> FinalStates;
 
@@ -27,10 +27,10 @@ namespace Project1
                 this.AdjacencyList[i] = new HashSet<int>();
 
             // initialize Cost
-            this.Cost = new List<char>[StateCount, StateCount];
+            this.Cost = new HashSet<char>[StateCount, StateCount];
             for (int i = 0; i < StateCount; i++)
                 for (int j = 0; j < StateCount; j++)
-                    this.Cost[i, j] = new List<char>();
+                    this.Cost[i, j] = new HashSet<char>();
 
             // determine StartState and FinalStates
             this.StartState = 0;
@@ -64,13 +64,14 @@ namespace Project1
             var DFAadjList = new List<HashSet<int>>();
 
             const int N = 100;
-            var DFACost = new List<char>[N, N];
+            var DFACost = new HashSet<char>[N, N];
             for (int i = 0; i < N; i++)
                 for (int j = 0; j < N; j++)
-                    DFACost[i, j] = new List<char>();
+                    DFACost[i, j] = new HashSet<char>();
 
             int index = 0;
             int trap = 0;
+            bool thereIsTrap = false;
             do
             {
                 var current = DFAStates[index];
@@ -87,16 +88,21 @@ namespace Project1
                     DFAadjList[index].Add(to);
                     DFACost[index, to].Add(symbol);
 
-
                     if (newState.Count == 0)
+                    {
+                        thereIsTrap = true;
                         trap = to;
+                    }
                 }
                 index++;
             } while (index < DFAStates.Count);
 
             //handle trap state
-            DFAadjList[trap].Add(trap);
-            DFACost[trap, trap].AddRange(this.Alphabet);
+            if (thereIsTrap)
+            {
+                DFAadjList[trap].Add(trap);
+                DFACost[trap, trap].UnionWith(this.Alphabet);
+            }
 
             var DFAFinalStates = GetDFAFinalStates(DFAStates, this.FinalStates);
             var c = formatCost();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Project1.Tests
 {
@@ -40,7 +41,7 @@ namespace Project1.Tests
             costExpected[3, 2].Add('b');
             for (int i = 0; i < nfa.StateCount; i++)
                 for (int j = 0; j < nfa.StateCount; j++)
-                    CollectionAssert.AreEqual(nfa.Cost[i, j], costExpected[i, j]);
+                    Assert.IsTrue(nfa.Cost[i, j].SetEquals(costExpected[i, j]));
         }
 
         [TestMethod()]
@@ -129,10 +130,12 @@ namespace Project1.Tests
         [TestMethod()]
         public void ToDFATest()
         {
-            string path = @"..\..\..\TestData\1.txt";
+            string path = @"..\..\..\TestData\5.txt";
             var nfa = new NFA(path);
             var dfa = nfa.ToDFA();
-            Assert.AreEqual(true, true);
+            dfa.Print(@"..\..\..\TestData\out5.txt");
+            CollectionAssert.AreEqual(File.ReadAllLines(@"..\..\..\TestData\out5.txt"),
+                File.ReadAllLines(@"..\..\..\TestData\expectedOut5.txt"));
         }
     }
 }
