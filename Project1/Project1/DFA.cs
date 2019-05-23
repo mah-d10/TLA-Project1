@@ -29,6 +29,86 @@ namespace Project1
             this.FinalStates = finalStates;
         }
 
+        public string ToRegex()
+        {
+            var B = new StringBuilder[this.StateCount];
+            var A = new StringBuilder[this.StateCount, this.StateCount];
+            initA(); initB();
+
+            for (int n = StateCount - 1; n >= 0; n--)
+            {
+                B[n] = new StringBuilder(concat(star(A[n, n]), B[n].ToString()));
+                for (int j = 0; j < n; j++)
+                    A[n, j] = new StringBuilder(concat(star(A[n, n]), B[n].ToString()));
+                for(int i=0;i<n;i++)
+                {
+                    B[i].Append('+' + concat(A[i,n].ToString(),B[n].ToString()));
+                    for (int j = 0; j < n; j++)
+                        A[i, j].Append('+' + concat(A[i,n].ToString(),A[n,j].ToString()));
+                }
+            }
+            return B[0].ToString();
+
+            void initA()
+            {
+                for (int i = 0; i < StateCount; i++)
+                    for (int j = 0; j < StateCount; j++)
+                    {
+                        A[i, j] = new StringBuilder();
+                        foreach (char s in Alphabet)
+                            if (Cost[i, j].Contains(s))
+                            {
+                                if (A[i, j].Length == 0)
+                                    A[i, j].Append(s);
+                                else
+                                {
+                                    A[i, j].Append('+');
+                                    A[i, j].Append(s);
+                                }
+                            }
+                        if (A[i, j].Length == 0)
+                            A[i, j].Append('$');
+                    }
+            }
+
+            void initB()
+            {
+                for (int i = 0; i < StateCount; i++)
+                {
+                    B[i] = new StringBuilder();
+                    if (FinalStates.Contains(i))
+                        B[i].Append('_');
+                    else
+                        B[i].Append('$');
+                }
+            }
+
+            string star(StringBuilder c)
+            {
+                if (c.ToString() == "$")
+                    return "$";
+                if (c.ToString() == "_")
+                    return "_";
+                return '(' + c.ToString() + ')' + '*';
+            }
+
+            string concat(string a, string b)
+            {
+                if (a == b)
+                    return a;
+
+                if (b == '(' + a + ')' + '*')
+                    return b;
+                if (a == '(' + b + ')' + '*')
+                    return a;
+
+                if (a == "$") return b;
+                if (b == "$") return a;
+                if (a == "_") return b;
+                if (b == "_") return a;
+                return a + b;
+            }
+        }
         public void Print(string outputPath)
         {
             var s = new StringBuilder();
