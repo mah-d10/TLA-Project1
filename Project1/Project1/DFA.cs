@@ -67,8 +67,13 @@ namespace Project1
 
         public int checkEquality(int node1, int node2)
         {
-            for (int i = 0; i < this.Alphabet.Length; i++)
+            bool flag = true;
+            for (int i = 0; i < AdjacencyList[node1].Count; i++)
             {
+                for (int j = 0; j < AdjacencyList[node2].Count; j++)
+                {
+
+                }
             }
             return 0;
         }
