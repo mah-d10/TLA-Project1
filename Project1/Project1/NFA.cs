@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+
+using System.Collections.Generic;
+
 using System.IO;
 using System.Linq;
 
@@ -6,6 +8,7 @@ namespace Project1
 {
     public class NFA
     {
+
         public int StateCount;
         public char[] Alphabet;
         public HashSet<int>[] AdjacencyList;
@@ -13,9 +16,11 @@ namespace Project1
         public int StartState;
         public HashSet<int> FinalStates;
 
+
         public NFA(string path)
         {
             string[] fileLines = File.ReadAllLines(path);
+
             StateCount = int.Parse(fileLines[0]);
 
             // get alphabet 
@@ -23,10 +28,12 @@ namespace Project1
 
             // initialize AdjacencyList 
             this.AdjacencyList = new HashSet<int>[StateCount];
+
             for (int i = 0; i < AdjacencyList.Length; i++)
                 this.AdjacencyList[i] = new HashSet<int>();
 
             // initialize Cost
+
             this.Cost = new HashSet<char>[StateCount, StateCount];
             for (int i = 0; i < StateCount; i++)
                 for (int j = 0; j < StateCount; j++)
@@ -37,6 +44,7 @@ namespace Project1
             this.FinalStates = new HashSet<int>();
 
             // create Adjacencylist and Cost
+
             for (int i = 2; i < fileLines.Length; i++)
             {
                 string[] edge = fileLines[i].Split(',');
